@@ -31,6 +31,29 @@ namespace ObjectResponse_POC.Controllers
         {
             return NotFound();
         }
+        [HttpPost]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public ActionResult<Home> Create(Home obj)
+        {
+            if (string.IsNullOrEmpty(obj.Name))
+            {
+                var problemDetails = new ValidationProblemDetails()
+                {
+                    Title = "Validation Error",
+                    Status = StatusCodes.Status400BadRequest,
+                    Detail = "The field is mandatory",
+                    Instance = HttpContext.Request.Path
+                };
+
+                problemDetails.Errors.Add("Name", new[] { "The field Name is mandatory" });
+
+                return BadRequest(problemDetails);
+            }
+
+            return Ok();
+        }
 
     }
 }

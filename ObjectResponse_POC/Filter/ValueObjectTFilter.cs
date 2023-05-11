@@ -15,14 +15,14 @@ public class ValueObjectTFilter: ResultFilterAttribute
             
             if (result.StatusCode == 200 || result.StatusCode == 201)
             {
-                result.Value = VO(result.Value);
+                result.Value = VO(result.Value!);
             }
             else if (result.StatusCode == 400)
             {
-                if (result.Value.GetType() == typeof(ValidationProblemDetails))
+                if (result.Value!.GetType() == typeof(ValidationProblemDetails))
                 {
                     var obj = result.Value as ValidationProblemDetails;
-                    var res = string.Join("; ", obj.Errors.SelectMany(el => el.Value.Select(el => el)));
+                    var res = string.Join("; ", obj!.Errors.SelectMany(el => el.Value.Select(el => el)));
                     result.Value = VOError(res);
                 }
                 if (result.Value is ProblemDetails problemDetails)
@@ -37,10 +37,10 @@ public class ValueObjectTFilter: ResultFilterAttribute
             }
             else if (result.StatusCode == 404)
             {
-                if (result.Value.GetType() == typeof(ValidationProblemDetails))
+                if (result.Value?.GetType() == typeof(ValidationProblemDetails))
                 {
                     var obj = result.Value as ValidationProblemDetails;
-                    var res = string.Join("; ", obj.Errors.SelectMany(el => el.Value.Select(el => el)));
+                    var res = string.Join("; ", obj!.Errors.SelectMany(el => el.Value.Select(el => el)));
                     result.Value = VOError(res);
                 }
                 if (result.Value is ProblemDetails problemDetails)
@@ -72,7 +72,7 @@ public class ValueObjectTFilter: ResultFilterAttribute
         {
             return new ObjectResponse<object>
             {
-                Data = null,
+                Data = null!,
                 Success = false,
                 Message = data.ToString()
             };
@@ -94,39 +94,10 @@ public class ValueObjectTFilter: ResultFilterAttribute
         {
             return new ObjectResponse<object>
             {
-                Data = null,
+                Data = null!,
                 Success = false,
                 Message = data.ToString()
             };
         }
     }
-    private ObjectResponse<object> VONotFound(object data)
-    {
-        string errorMessage;
-
-        if (data == null)
-        {
-            errorMessage = "Resource not found";
-        }
-        else if (data is string)
-        {
-            errorMessage = data.ToString();
-        }
-        else if (data is IEnumerable<string> errors)
-        {
-            errorMessage = string.Join("; ", errors);
-        }
-        else
-        {
-            errorMessage = "Resource not found";
-        }
-
-        return new ObjectResponse<object>
-        {
-            Data = null,
-            Success = false,
-            Message = errorMessage
-        };
-    }
-
 }

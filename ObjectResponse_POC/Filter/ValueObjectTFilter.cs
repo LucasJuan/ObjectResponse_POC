@@ -25,6 +25,10 @@ public class ValueObjectTFilter: ResultFilterAttribute
                     var res = string.Join("; ", obj.Errors.SelectMany(el => el.Value.Select(el => el)));
                     result.Value = VOError(res);
                 }
+                if (result.Value is ProblemDetails problemDetails)
+                {
+                    result.Value = VOError(problemDetails.Detail ?? problemDetails.Title ?? "Error");
+                }
                 else
 
                 {
@@ -39,10 +43,14 @@ public class ValueObjectTFilter: ResultFilterAttribute
                     var res = string.Join("; ", obj.Errors.SelectMany(el => el.Value.Select(el => el)));
                     result.Value = VOError(res);
                 }
+                if (result.Value is ProblemDetails problemDetails)
+                {
+                    result.Value = VOError(problemDetails.Detail ?? problemDetails.Title ?? "Error");
+                }
                 else
 
                 {
-                    result.Value = VOError("Value not found");
+                    result.Value = VOError(result.Value?.ToString() ?? "Value not found");
                 }
             }
         }

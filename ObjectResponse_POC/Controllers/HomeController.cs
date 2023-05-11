@@ -49,7 +49,7 @@ namespace ObjectResponse_POC.Controllers
 
                 problemDetails.Errors.Add("Name", new[] { "The field Name is mandatory" });
 
-                return BadRequest(problemDetails);
+                return BadRequest(obj);
             }
 
             return Ok();

@@ -37,7 +37,7 @@ namespace ObjectResponse_POC.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public ActionResult<Home> Create(Home obj)
         {
-            if (string.IsNullOrEmpty(obj.Name))
+            if (!string.IsNullOrEmpty(obj.Name))
             {
                 var problemDetails = new ValidationProblemDetails()
                 {

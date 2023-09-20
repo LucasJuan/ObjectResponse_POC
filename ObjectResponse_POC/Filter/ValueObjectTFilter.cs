@@ -25,7 +25,7 @@ public class ValueObjectTFilter: ResultFilterAttribute
                     var res = string.Join("; ", obj!.Errors.SelectMany(el => el.Value.Select(el => el)));
                     result.Value = VOError(res);
                 }
-                if (result.Value is ProblemDetails problemDetails)
+                else if (result.Value is ProblemDetails problemDetails)
                 {
                     result.Value = VOError(problemDetails.Detail ?? problemDetails.Title ?? "Error");
                 }
@@ -43,7 +43,7 @@ public class ValueObjectTFilter: ResultFilterAttribute
                     var res = string.Join("; ", obj!.Errors.SelectMany(el => el.Value.Select(el => el)));
                     result.Value = VOError(res);
                 }
-                if (result.Value is ProblemDetails problemDetails)
+                else if (result.Value is ProblemDetails problemDetails)
                 {
                     result.Value = VOError(problemDetails.Detail ?? problemDetails.Title ?? "Error");
                 }
